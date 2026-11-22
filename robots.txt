@@ -1,0 +1,49 @@
+# Robots.txt for Think Grow Media (https://thinkgrowmedia.com)
+# Optimized for Search Crawlers, Answer Engines (AEO), and Generative Search (GEO)
+
+User-agent: *
+Allow: /
+
+# Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# AI Answer Engines & Generative Search Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# XML Sitemap
+Sitemap: https://thinkgrowmedia.com/sitemap.xml
+
+# LLM Clean Context File (llmstxt.org standard)
+# https://thinkgrowmedia.com/llms.txt
