@@ -64,7 +64,7 @@ function initThemeToggle() {
 }
 
 /* --------------------------------------------------------------------------
-   1. 3D PERSPECTIVE WIREFRAME & PARTICLE CANVAS
+   1. FRAGMENT-STYLE COSMIC CURVED LASER ARCS & HORIZON LIGHT BEAM ENGINE
    -------------------------------------------------------------------------- */
 function initCyberCanvas() {
   const canvas = document.getElementById('cyberCanvas');
@@ -89,89 +89,138 @@ function initCyberCanvas() {
     targetMouseY = e.clientY;
   }, { passive: true });
 
-  // Floating Particles
+  // Subtle Cosmic Starlight particles
   const particleCount = 45;
-  const particles = [];
+  const stars = [];
   for (let i = 0; i < particleCount; i++) {
-    particles.push({
+    stars.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      size: Math.random() * 2 + 1,
-      alpha: Math.random() * 0.5 + 0.2
+      size: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.6 + 0.2,
+      pulseSpeed: 0.01 + Math.random() * 0.02,
+      phase: Math.random() * Math.PI * 2
     });
   }
 
-  let horizonOffset = 0;
+  // Laser Arcs definition matching fragmenthq.com
+  const arcCount = 14;
+  let time = 0;
 
   function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // Smooth mouse interpolation
-    mouseX += (targetMouseX - mouseX) * 0.05;
-    mouseY += (targetMouseY - mouseY) * 0.05;
+    // Smooth mouse damping
+    mouseX += (targetMouseX - mouseX) * 0.04;
+    mouseY += (targetMouseY - mouseY) * 0.04;
 
-    const horizonY = height * 0.65 + (mouseY - height / 2) * 0.15;
-    const vanishX = width * 0.5 + (mouseX - width / 2) * 0.2;
+    const mouseOffsetX = (mouseX - width / 2) / (width / 2);
+    const mouseOffsetY = (mouseY - height / 2) / (height / 2);
 
     const isLight = document.body.classList.contains('light-theme');
+    const horizonY = height * 0.48 + mouseOffsetY * 25;
+    const focalX = width * 0.82 + mouseOffsetX * 30;
 
-    // Draw Perspective Grid Horizon
-    ctx.strokeStyle = isLight ? 'rgba(217, 27, 36, 0.08)' : 'rgba(255, 42, 59, 0.08)';
-    ctx.lineWidth = 1;
+    time += 0.008;
 
-    // Perspective lines fanning out from vanishing point
-    const lines = 24;
-    for (let i = -lines / 2; i <= lines / 2; i++) {
-      const startX = vanishX + i * 25;
-      const endX = vanishX + i * (width / lines) * 3.5;
-      ctx.beginPath();
-      ctx.moveTo(startX, horizonY);
-      ctx.lineTo(endX, height);
-      ctx.stroke();
-    }
-
-    // Horizontal receding lines
-    horizonOffset = (horizonOffset + 0.3) % 40;
-    for (let y = horizonY; y < height; y += (y - horizonY) * 0.25 + 6) {
-      const dynamicY = y + horizonOffset * 0.15;
-      if (dynamicY < height) {
-        ctx.beginPath();
-        ctx.moveTo(0, dynamicY);
-        ctx.lineTo(width, dynamicY);
-        ctx.stroke();
-      }
-    }
-
-    // Floating Ambient Constellation Particles
-    ctx.fillStyle = isLight ? 'rgba(217, 27, 36, 0.45)' : 'rgba(255, 60, 80, 0.55)';
+    // 1. Draw subtle ambient star particles
     for (let i = 0; i < particleCount; i++) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if (p.x < 0) p.x = width;
-      if (p.x > width) p.x = 0;
-      if (p.y < 0) p.y = height;
-      if (p.y > height) p.y = 0;
-
+      const s = stars[i];
+      s.phase += s.pulseSpeed;
+      const currentAlpha = s.alpha * (0.6 + 0.4 * Math.sin(s.phase));
+      ctx.fillStyle = isLight
+        ? `rgba(37, 99, 235, ${currentAlpha * 0.3})`
+        : `rgba(255, 255, 255, ${currentAlpha * 0.75})`;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
       ctx.fill();
+    }
 
-      // Connect nearby particles
-      for (let j = i + 1; j < particleCount; j++) {
-        const p2 = particles[j];
-        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if (dist < 110) {
-          ctx.strokeStyle = isLight ? `rgba(217, 27, 36, ${0.1 * (1 - dist / 110)})` : `rgba(255, 42, 59, ${0.1 * (1 - dist / 110)})`;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
+    // 2. Draw Horizon Radiant Glow / Flare (vanishing point on the right)
+    if (!isLight) {
+      const glowGrad = ctx.createRadialGradient(focalX, horizonY, 0, focalX, horizonY, width * 0.5);
+      glowGrad.addColorStop(0, 'rgba(244, 63, 94, 0.45)');
+      glowGrad.addColorStop(0.2, 'rgba(139, 92, 246, 0.3)');
+      glowGrad.addColorStop(0.5, 'rgba(37, 99, 235, 0.18)');
+      glowGrad.addColorStop(1, 'rgba(3, 3, 8, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(focalX, horizonY, width * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 3. Piercing Horizon Horizontal Laser Beam
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(0, horizonY);
+    ctx.lineTo(width, horizonY);
+    const horizonGrad = ctx.createLinearGradient(0, horizonY, width, horizonY);
+    if (isLight) {
+      horizonGrad.addColorStop(0, 'rgba(37, 99, 235, 0)');
+      horizonGrad.addColorStop(0.3, 'rgba(37, 99, 235, 0.25)');
+      horizonGrad.addColorStop(0.8, 'rgba(59, 130, 246, 0.5)');
+      horizonGrad.addColorStop(1, 'rgba(37, 99, 235, 0)');
+      ctx.strokeStyle = horizonGrad;
+      ctx.lineWidth = 1;
+    } else {
+      horizonGrad.addColorStop(0, 'rgba(37, 99, 235, 0.05)');
+      horizonGrad.addColorStop(0.35, 'rgba(59, 130, 246, 0.7)');
+      horizonGrad.addColorStop(0.75, 'rgba(244, 63, 94, 0.85)');
+      horizonGrad.addColorStop(1, 'rgba(251, 146, 60, 0.1)');
+      ctx.strokeStyle = horizonGrad;
+      ctx.lineWidth = 1.8;
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = 'rgba(59, 130, 246, 0.9)';
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // 4. Sweeping Curved Fiber-Optic Laser Arcs (Fragment Signature Aesthetic)
+    for (let i = 0; i < arcCount; i++) {
+      const progress = i / (arcCount - 1);
+      const wave = Math.sin(time + i * 0.45) * 8;
+
+      const startX = width * 1.1 + mouseOffsetX * 20;
+      const startY = -40 + progress * (height * 0.75) + wave;
+
+      const cp1X = width * (0.68 - progress * 0.12) + mouseOffsetX * 35;
+      const cp1Y = horizonY - 120 + progress * 240 + Math.cos(time + i * 0.3) * 12;
+
+      const cp2X = width * (0.28 - progress * 0.15) + mouseOffsetX * 15;
+      const cp2Y = horizonY + 80 + progress * 320 + Math.sin(time * 0.8 + i) * 15;
+
+      const endX = -100;
+      const endY = height * 0.45 + progress * (height * 0.85) + wave;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
+
+      const arcGrad = ctx.createLinearGradient(startX, startY, endX, endY);
+      if (isLight) {
+        arcGrad.addColorStop(0, 'rgba(37, 99, 235, 0.05)');
+        arcGrad.addColorStop(0.5, `rgba(59, 130, 246, ${0.15 + (i % 3 === 0 ? 0.15 : 0.05)})`);
+        arcGrad.addColorStop(1, 'rgba(99, 102, 241, 0.05)');
+        ctx.strokeStyle = arcGrad;
+        ctx.lineWidth = i % 3 === 0 ? 1.6 : 1.0;
+      } else {
+        const isFeatured = i === 2 || i === 5 || i === 8 || i === 11;
+        const alphaBase = isFeatured ? 0.85 : 0.45;
+
+        arcGrad.addColorStop(0, `rgba(56, 189, 248, ${alphaBase * 0.8})`);
+        arcGrad.addColorStop(0.35, `rgba(37, 99, 235, ${alphaBase})`);
+        arcGrad.addColorStop(0.7, `rgba(139, 92, 246, ${alphaBase * 0.95})`);
+        arcGrad.addColorStop(1, `rgba(192, 132, 252, ${alphaBase * 0.7})`);
+
+        ctx.strokeStyle = arcGrad;
+        ctx.lineWidth = isFeatured ? 2.6 : 1.2;
+        ctx.shadowBlur = isFeatured ? 22 : 10;
+        ctx.shadowColor = isFeatured ? 'rgba(59, 130, 246, 0.85)' : 'rgba(139, 92, 246, 0.4)';
       }
+
+      ctx.stroke();
+      ctx.restore();
     }
 
     requestAnimationFrame(render);
