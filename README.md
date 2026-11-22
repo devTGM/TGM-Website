@@ -1,30 +1,34 @@
 # THINK GROW MEDIA (TGM) // D2C Performance Marketing & Creative Engine
 
-The next-generation digital presence for **Think Grow Media**, co-founded by **Surya Kumar & Ajay Maan** in Delhi NCR (Sector 62, Noida One).
+The next-generation digital presence and growth intelligence lab for **Think Grow Media (TGM)**, headquartered in Delhi NCR (Sector 62, Noida One).
 
 ---
 
-## ⚡ What Changed
+## ⚡ Core Capabilities & Architecture
 
-### 1. New Editorial H2 Typography
-* Replaced the standard blocky uppercase font with **`Playfair Display` & `Italiana` serif** styling featuring italic emerald emphasis (`<em>`).
-* Blends high-fashion D2C luxury editorial typography with brutalist cyber-minimalism—matching the sophisticated, tactile finish of `thisisweird.in`.
+### 1. D2C Performance Marketing & Algorithmic Media Buying
+* Engineered specifically for high-growth e-commerce brands scaling past 7 and 8 figures.
+* Precision media buying across Meta Advantage+ Shopping Campaigns (ASC), Google Performance Max, High-Intent Search, and TikTok Ads.
+* Focus on contribution margin, Blended ROAS, Marketing Efficiency Ratio (MER), and First-Party Attribution (Triple Whale, Northbeam).
 
-### 2. 100% Focused on D2C Performance Marketing
-* All messaging, case studies, and simulators are now tailored specifically to **D2C e-commerce brands** (Beauty & Skincare, Fashion & Apparel, Food & Wellness, Luxury Goods).
-* Replaced generic services with core D2C growth levers: **Creative Hook Velocity, Meta Advantage+ Broad Scaling, Shopify PDP & Checkout Conversion, and Blended CAC/ROAS/MER Optimization**.
+### 2. High-Velocity UGC & Creative Hook Velocity
+* 48-hour modular creative sprints producing 12–20+ psychological hook variations monthly.
+* 3-second hook retention optimization to command the Meta auction with low customer acquisition costs (CAC).
+* Direct response video, unboxing formats, founder origin stories, and contrarian problem-agitation angles.
 
-### 3. Radical Text Reduction
-* Eliminated walls of text and long paragraphs across all sections.
-* Replaced with scannable **single-sentence axioms, high-contrast metric chips, and visual side-by-side breakdowns**.
-* Simplified the contact audit form down to essentials: Name, Work Email, D2C Store URL / Instagram, and Monthly Ad Spend.
+### 3. Full-Funnel Shopify Conversion Engineering (CRO)
+* Post-click PDP (Product Detail Page) conversion optimization, custom landers, bundle builders, and frictionless checkout funnels.
+* Average Order Value (AOV) expansion and retention marketing integration (Klaviyo lifecycle flows).
 
 ---
 
-## 🚀 How to View
+## 🚀 How to View Locally
 
 Open directly in your browser:
 ```bash
-open "/Users/surya/Desktop/TGM Website/index.html"
+open "index.html"
 ```
-Or open `file:///Users/surya/Desktop/TGM%20Website/index.html` in Chrome or Safari.
+Or run the local development server:
+```bash
+npm run dev
+```
