@@ -1,6 +1,6 @@
 # THINK GROW MEDIA (TGM) // D2C Performance Marketing & Creative Engine
 
-The next-generation digital presence and growth intelligence lab for **Think Grow Media (TGM)**, headquartered in Delhi NCR (Sector 62, Noida One).
+The next-generation digital presence and growth intelligence lab for **Think Grow Media (TGM)**, headquartered in Delhi NCR (B-305, Tower B, KLJ Noida One, Sec 62, Noida, Uttar Pradesh, 201309).
 
 ---
 
